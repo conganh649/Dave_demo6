@@ -1,46 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, FC, useEffect } from "react";
 import { Button } from "semantic-ui-react";
+import _ from "lodash";
 
-type Flower = {
-  id: string;
-  title: string;
-  inStock: boolean;
-};
+import FlowerTable from "./FlowerTable";
+import AddEditForm from "../form/AddEditForm";
+import { Flower, initialFlowers, blankFlower } from "./type";
 
-const initialFlowers: Flower[] = [
-  {
-    id: "flower01",
-    title: "Sunflower",
-    inStock: false,
-  },
-  {
-    id: "flower02",
-    title: "Rose",
-    inStock: true,
-  },
-  {
-    id: "flower03",
-    title: "Daisy",
-    inStock: true,
-  },
-  {
-    id: "flower04",
-    title: "Orchid",
-    inStock: false,
-  },
-];
-
-const TableItem = () => {
+const TableItem: FC = () => {
   const [flowers, setFlowers] = useState(initialFlowers);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [flowersToShow, setFlowersToShow] = useState<Flower[]>(flowers);
+  const [form, setForm] = useState<boolean>(false);
+  const [passFlower, setPassFlower] = useState<Flower>(blankFlower);
+  const [isUpdate, setIsUpdate] = useState<boolean>(false);
 
-  const handleStockClick = (id: string) => {
-    setFlowers((prevFlowers) =>
-      prevFlowers.map((flower) => {
-        return flower.id === id
-          ? { ...flower, inStock: !flower.inStock }
-          : flower;
-      })
-    );
+  useEffect(() => {
+    filterFlowers();
+  }, [searchTerm]);
+
+  useEffect(() => {
+    setFlowersToShow(flowers);
+    filterFlowers();
+  }, [flowers]);
+
+  const filterFlowers = () => {
+    var result: Flower[] = flowers.filter((flower) => {
+      return flower.title.includes(searchTerm);
+    });
+    setFlowersToShow(result);
   };
 
   const handleDeleteClick = (id: string) => {
@@ -52,42 +39,79 @@ const TableItem = () => {
     }
   };
 
+  const handleUpdateClick = (flowerId: string) => {
+    setIsUpdate(true);
+    setForm(true);
+    const updateFlower: Flower[] = flowers.filter((flower) => {
+      return flower.id.includes(flowerId);
+    });
+    setPassFlower(updateFlower[0]);
+  };
+
+  const handleSearch = (event: any) => {
+    setSearchTerm(event.target.value);
+  };
+
+  function showForm() {
+    setForm(true);
+  }
+
+  const closeForm = () => {
+    setForm(false);
+    setPassFlower(blankFlower);
+    setIsUpdate(false);
+  };
+
+  const handleAddFlower = (flower: Flower) => {
+    var newData: Flower = {
+      id: flower.id,
+      title: flower.title,
+      inStock: flower.inStock,
+    };
+    var newArr: Flower[] = [...flowers];
+    newArr.push(newData);
+    setFlowers(newArr);
+    closeForm();
+  };
+
+  const handleUpdateFlower = (flower: Flower) => {
+    var index = _.findIndex(flowers, { id: flower.id });
+    var newArr = [...flowers];
+    newArr.splice(index, 1);
+    newArr.splice(index, 0, flower);
+    setFlowers(newArr);
+    closeForm();
+  };
+
   return (
     <div>
-      <table cellSpacing="0">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>In stock?</th>
-            <th colSpan={2}>Actions</th>
-          </tr>
-        </thead>
-        {flowers.map((flower) => (
-          <tbody>
-            <tr key={flower.id}>
-              <td>{flower.id}</td>
-              <td>{flower.title}</td>
-              <td>
-                <Button
-                  className={"" + (flower.inStock ? "yes" : "no")}
-                  onClick={() => handleStockClick(flower.id)}
-                >
-                  {flower.inStock ? "Yes" : "No"}
-                </Button>
-              </td>
-              <td>
-                <Button onClick={() => handleDeleteClick(flower.id)}>
-                  Delete
-                </Button>
-              </td>
-              <td>
-                <Button>Update</Button>
-              </td>
-            </tr>
-          </tbody>
-        ))}
-      </table>
+      {form ? (
+        <AddEditForm
+          flower={passFlower}
+          closeForm={closeForm}
+          handleAddFlower={handleAddFlower}
+          handleUpdateFlower={handleUpdateFlower}
+          isUpdate={isUpdate}
+        />
+      ) : null}
+
+      <div className="search-add">
+        <div className="search-bar">
+          <input
+            type="text"
+            placeholder="What would you like to search for?"
+            onChange={handleSearch}
+          ></input>
+        </div>
+        <div className="add-flower">
+          <Button onClick={showForm}>Add flower</Button>
+        </div>
+      </div>
+      <FlowerTable
+        flowers={flowersToShow}
+        handleDeleteClick={handleDeleteClick}
+        handleUpdateClick={handleUpdateClick}
+      />
     </div>
   );
 };
