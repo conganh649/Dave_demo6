@@ -1,5 +1,5 @@
 body {
-  text-align: center !important;
+  text-align: center;
   background: #fff !important;
   font-family: "Roboto", sans-serif !important;
 }
@@ -62,4 +62,98 @@ Button:hover {
   color: red;
   font-size: medium;
   font-weight: 600;
+}
+
+.search-add {
+  display: flex;
+  flex-direction: row;
+  margin: 30px 0;
+  justify-content: space-between;
+  width: 80%;
+}
+
+.search-bar {
+  margin-left: 60px;
+}
+
+.search-bar input {
+  border: none;
+  outline: none;
+  background: none;
+  border-bottom: 1px solid black;
+  padding: 15px 0;
+  width: 150%;
+  font-size: 20px;
+}
+
+.search-bar label {
+  font-weight: 800;
+  font-size: medium;
+}
+
+.form-style-10 {
+  width: 450px;
+  padding: 30px;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 10px;
+  border: solid 2px black;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.13);
+}
+.form-style-10 .inner-wrap {
+  padding: 10px;
+  background: #fff;
+  border-radius: 6px;
+}
+.form-style-10 h1 {
+  background: #2a88ad;
+  padding: 20px 30px 15px 30px;
+  margin: -30px -30px 30px -30px;
+  border-radius: 6px 6px 0 0;
+  color: #fff;
+  box-shadow: inset 0px 2px 2px 0px rgba(255, 255, 255, 0.17);
+  border: 1px solid #257c9e;
+}
+.form-style-10 h1 > span {
+  display: block;
+}
+.form-style-10 label {
+  display: block;
+  color: #888;
+  margin-bottom: 15px;
+}
+.form-style-10 input[type="text"],
+.form-style-10 select {
+  margin-top: 10px;
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 2px solid #257c9e;
+  box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.33);
+}
+
+.form-style-10 Button {
+  margin-top: 25px;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 2px solid #257c9e;
+  background-color: rgb(0, 252, 252);
+  color: black;
+  font-size: 15px;
+  font-weight: 700;
+  box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.33);
+}
+
+.form-style-10 Button:hover {
+  background-color: #257c9e;
+  color: white;
+}
+
+.form-style-10 .section {
+  font: normal 20px "Bitter", serif;
+  color: #2a88ad;
 }
