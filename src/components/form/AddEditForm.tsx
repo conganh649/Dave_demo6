@@ -1,7 +1,8 @@
 import React, { FC, useState } from "react";
+import { useEffect } from "react";
 import { Button } from "semantic-ui-react";
 
-import { Flower } from "../table/type";
+import { Flower, blankFlower } from "../table/type";
 
 interface FlowerProps {
   flower: Flower;
@@ -15,6 +16,18 @@ const AddEditForm: FC<FlowerProps> = (props: FlowerProps) => {
   const [flowerID, setFlowerID] = useState<string>(props.flower.id);
   const [flowerTitle, setFlowerTitle] = useState<string>(props.flower.title);
   const [flowerStock, setFlowerStock] = useState<boolean>(props.flower.inStock);
+
+  useEffect(() => {
+    if (!props.isUpdate) {
+      setFlowerID(blankFlower.id);
+      setFlowerTitle(blankFlower.title);
+      setFlowerStock(blankFlower.inStock);
+    } else {
+      setFlowerID(props.flower.id);
+      setFlowerTitle(props.flower.title);
+      setFlowerStock(props.flower.inStock);
+    }
+  }, [props.isUpdate, props.flower.id]);
 
   const handleIdChange = (event: any) => {
     setFlowerID(event.target.value);

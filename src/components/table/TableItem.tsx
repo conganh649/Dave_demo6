@@ -40,25 +40,27 @@ const TableItem: FC = () => {
   };
 
   const handleUpdateClick = (flowerId: string) => {
+    setForm(false);
     setIsUpdate(true);
-    setForm(true);
     const updateFlower: Flower[] = flowers.filter((flower) => {
       return flower.id.includes(flowerId);
     });
     setPassFlower(updateFlower[0]);
+    setForm(true);
   };
 
   const handleSearch = (event: any) => {
     setSearchTerm(event.target.value);
   };
 
-  function showForm() {
+  const handleAddClick = () => {
+    closeForm();
+    setPassFlower(blankFlower);
     setForm(true);
-  }
+  };
 
   const closeForm = () => {
     setForm(false);
-    setPassFlower(blankFlower);
     setIsUpdate(false);
   };
 
@@ -71,7 +73,7 @@ const TableItem: FC = () => {
     var newArr: Flower[] = [...flowers];
     newArr.push(newData);
     setFlowers(newArr);
-    closeForm();
+    setForm(false);
   };
 
   const handleUpdateFlower = (flower: Flower) => {
@@ -80,7 +82,7 @@ const TableItem: FC = () => {
     newArr.splice(index, 1);
     newArr.splice(index, 0, flower);
     setFlowers(newArr);
-    closeForm();
+    setForm(false);
   };
 
   return (
@@ -104,7 +106,7 @@ const TableItem: FC = () => {
           ></input>
         </div>
         <div className="add-flower">
-          <Button onClick={showForm}>Add flower</Button>
+          <Button onClick={handleAddClick}>Add flower</Button>
         </div>
       </div>
       <FlowerTable
