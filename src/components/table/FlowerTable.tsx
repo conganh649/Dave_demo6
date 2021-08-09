@@ -22,7 +22,7 @@ const FlowerTable: FC<FlowerProps> = (props: FlowerProps) => {
           </tr>
         </thead>
         {props.flowers.map((flower) => (
-          <tbody>
+          <tbody key={flower.id}>
             <tr key={flower.id}>
               <td>{flower.id}</td>
               <td>{flower.title}</td>

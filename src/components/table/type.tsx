@@ -6,22 +6,22 @@ type Flower = {
 
 const initialFlowers: Flower[] = [
   {
-    id: "flower01",
+    id: "flower1",
     title: "Sunflower",
     inStock: false,
   },
   {
-    id: "flower02",
+    id: "flower2",
     title: "Sunflower",
     inStock: true,
   },
   {
-    id: "flower03",
+    id: "flower3",
     title: "Daisy",
     inStock: true,
   },
   {
-    id: "flower04",
+    id: "flower4",
     title: "Orchid",
     inStock: false,
   },
@@ -33,5 +33,7 @@ const blankFlower: Flower = {
   inStock: true,
 };
 
-export { initialFlowers, blankFlower };
+const defaultNumber: number = 4;
+
+export { initialFlowers, blankFlower, defaultNumber };
 export type { Flower };

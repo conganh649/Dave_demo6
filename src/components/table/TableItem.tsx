@@ -4,7 +4,8 @@ import _ from "lodash";
 
 import FlowerTable from "./FlowerTable";
 import AddEditForm from "../form/AddEditForm";
-import { Flower, initialFlowers, blankFlower } from "./type";
+import { Flower, initialFlowers, blankFlower, defaultNumber } from "./type";
+import Header from "../header_footer/Header";
 
 const TableItem: FC = () => {
   const [flowers, setFlowers] = useState(initialFlowers);
@@ -13,6 +14,7 @@ const TableItem: FC = () => {
   const [form, setForm] = useState<boolean>(false);
   const [passFlower, setPassFlower] = useState<Flower>(blankFlower);
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
+  const [count, setCount] = useState<number>(defaultNumber);
 
   useEffect(() => {
     filterFlowers();
@@ -40,25 +42,27 @@ const TableItem: FC = () => {
   };
 
   const handleUpdateClick = (flowerId: string) => {
+    setForm(false);
     setIsUpdate(true);
-    setForm(true);
     const updateFlower: Flower[] = flowers.filter((flower) => {
       return flower.id.includes(flowerId);
     });
     setPassFlower(updateFlower[0]);
+    setForm(true);
   };
 
   const handleSearch = (event: any) => {
     setSearchTerm(event.target.value);
   };
 
-  function showForm() {
+  const handleAddClick = () => {
+    closeForm();
+    setPassFlower(blankFlower);
     setForm(true);
-  }
+  };
 
   const closeForm = () => {
     setForm(false);
-    setPassFlower(blankFlower);
     setIsUpdate(false);
   };
 
@@ -71,7 +75,9 @@ const TableItem: FC = () => {
     var newArr: Flower[] = [...flowers];
     newArr.push(newData);
     setFlowers(newArr);
-    closeForm();
+    setForm(false);
+    var newCount: number = count + 1;
+    setCount(newCount);
   };
 
   const handleUpdateFlower = (flower: Flower) => {
@@ -80,11 +86,21 @@ const TableItem: FC = () => {
     newArr.splice(index, 1);
     newArr.splice(index, 0, flower);
     setFlowers(newArr);
-    closeForm();
+    setForm(false);
   };
 
   return (
     <div>
+      <h1
+        style={{
+          marginTop: "100px",
+          textAlign: "center",
+        }}
+      >
+        Welcome to my flower Manager
+      </h1>
+      <Header />
+
       {form ? (
         <AddEditForm
           flower={passFlower}
@@ -92,6 +108,7 @@ const TableItem: FC = () => {
           handleAddFlower={handleAddFlower}
           handleUpdateFlower={handleUpdateFlower}
           isUpdate={isUpdate}
+          count={count}
         />
       ) : null}
 
@@ -104,7 +121,7 @@ const TableItem: FC = () => {
           ></input>
         </div>
         <div className="add-flower">
-          <Button onClick={showForm}>Add flower</Button>
+          <Button onClick={handleAddClick}>Add flower</Button>
         </div>
       </div>
       <FlowerTable
